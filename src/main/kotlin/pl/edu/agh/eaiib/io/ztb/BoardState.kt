@@ -1,6 +1,8 @@
 package pl.edu.agh.eaiib.io.ztb
 
-class BoardState(private val boardState : Array<Array<State>>) {
+import java.util.ArrayList
+
+class BoardState(private val boardState : Array<Array<State>>, val nextTurn : State) {
     fun hasGameEnded(): Boolean {
         val statesPerColumn : MutableMap<Int, MutableSet<State>>  = HashMap();
         val statesPerFirstDiagonal: MutableSet<State>  = HashSet();
@@ -42,5 +44,25 @@ class BoardState(private val boardState : Array<Array<State>>) {
             return true;
 
         return false;
+    }
+
+    fun generateChildrenBoardStates() : Array<BoardState> {
+        val childrenBoardStates: ArrayList<BoardState> = ArrayList();
+        for (rowIndex in 0..this.boardState.size - 1) {
+            val innerArray: Array<State> = this.boardState[rowIndex];
+            for (columnIndex in 0..innerArray.size - 1) {
+                if (innerArray[columnIndex] != State.Untouched)
+                    continue;
+                val boardState: Array<Array<State>> = this.boardState.clone().map { it.clone() }.toTypedArray()
+                boardState[rowIndex][columnIndex] = this.nextTurn;
+                val nextTurn: State = if (this.nextTurn == State.Cross) State.Circle else State.Cross;
+                childrenBoardStates.add(BoardState(boardState, nextTurn))
+            }
+        }
+        return childrenBoardStates.toTypedArray();
+    }
+
+    fun getBoardStateMatrix() : Array<Array<State>> {
+        return this.boardState;
     }
 }
