@@ -65,7 +65,10 @@ data class Node(val state: State,
     }
 }
 
-
 enum class State {
     Untouched, Cross, Circle
+}
+
+fun main(args: Array<String>) {
+    return;
 }
