@@ -6,10 +6,6 @@ import java.util.ArrayList
 class BoardState(private val boardState: Array<Array<State>>, val nextTurn: State) : Serializable {
 
     fun hasGameEnded(): Boolean {
-        if (isBoardClear()) {
-            return false
-        }
-
         val statesPerColumn: MutableMap<Int, MutableSet<State>> = HashMap()
         val statesPerFirstDiagonal: MutableSet<State> = HashSet()
         val statesPerSecondDiagonal: MutableSet<State> = HashSet()
@@ -40,32 +36,24 @@ class BoardState(private val boardState: Array<Array<State>>, val nextTurn: Stat
                 }
             }
 
-            if (statesInRow.size < 2) {
+            if (isGameFinished(statesInRow)) {
                 return true
             }
         }
 
-        if (statesPerColumn.any { it.value.size < 2 }) {
+        if (statesPerColumn.any { isGameFinished(it.value) }) {
             return true
         }
 
-        if (statesPerFirstDiagonal.size < 2 || statesPerSecondDiagonal.size < 2) {
+        if (isGameFinished(statesPerFirstDiagonal) || isGameFinished(statesPerSecondDiagonal)) {
             return true
         }
 
         return false
     }
 
-    private fun isBoardClear(): Boolean {
-        for (i in 0 until boardState.size) {
-            for (j in 0 until boardState.size) {
-                if (boardState[i][j] != State.Untouched) {
-                    return false
-                }
-            }
-        }
-
-        return true
+    private fun isGameFinished(states: Set<State>): Boolean {
+        return states.size < 2 && !states.contains(State.Untouched)
     }
 
     fun generateChildrenBoardStates(): Array<BoardState> {
