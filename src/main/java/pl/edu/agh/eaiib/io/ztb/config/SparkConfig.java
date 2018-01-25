@@ -13,6 +13,7 @@ public class SparkConfig {
     private static SparkConfig INSTANCE;
 
     private final Properties sparkProperties;
+    private final JavaSparkContext sparkContext;
 
     public static synchronized SparkConfig getInstance() throws IOException {
         if (INSTANCE == null) {
@@ -33,9 +34,15 @@ public class SparkConfig {
         try (FileReader reader = new FileReader(sparkConfigFile)) {
             sparkProperties.load(reader);
         }
+
+        sparkContext = createSparkContext();
     }
 
-    public JavaSparkContext createSparkContext() {
+    public JavaSparkContext getSparkContext() {
+        return sparkContext;
+    }
+
+    private JavaSparkContext createSparkContext() {
         String appName = getProperty(APPNAME_KEY, DEFAULT_APP_NAME);
         String master = getProperty(MASTER_KEY, DEFAULT_MASTER_VALUE);
 

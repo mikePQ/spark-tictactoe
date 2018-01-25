@@ -1,6 +1,9 @@
 package pl.edu.agh.eaiib.io.ztb.ui
 
+import pl.edu.agh.eaiib.io.ztb.BoardState
+import pl.edu.agh.eaiib.io.ztb.Results
 import pl.edu.agh.eaiib.io.ztb.State
+import pl.edu.agh.eaiib.io.ztb.TicTacToeProbabilityCalculator
 
 class TicTacToeController {
     var boardSize = BoardSize.Normal
@@ -32,6 +35,11 @@ class TicTacToeController {
     fun clearBoard() {
         fields = createFields(boardSize)
         currentPlayerIsCross = true
+    }
+
+    fun calculateResults(): Results {
+        val calculator = TicTacToeProbabilityCalculator()
+        return calculator.calculate(BoardState(fields, if (currentPlayerIsCross) State.Cross else State.Circle))
     }
 
     private fun createFields(boardSize: BoardSize): Array<Array<State>> {

@@ -7,9 +7,9 @@ import java.io.IOException;
 
 public class TicTacToeProbabilityCalculator {
 
-    public void calculate() throws IOException {
+    public Results calculate(BoardState boardState) throws IOException {
         SparkConfig config = SparkConfig.getInstance();
-        Tree tree = new Tree(3, config);
+        Tree tree = new Tree(boardState, config);
 
         JavaRDD<Node> leafs = tree.collectAllNodes()
                 .filter(Node::isLeaf);
@@ -17,16 +17,8 @@ public class TicTacToeProbabilityCalculator {
         long all = leafs.count();
         long circle = leafs.filter(node -> node.getResult() == Result.CircleWon).count();
         long cross = leafs.filter(node -> node.getResult() == Result.CrossWon).count();
-        long draws = leafs.count() - cross - circle;
+        long draws = all - cross - circle;
 
-        System.out.println(all);
-        System.out.println(circle);
-        System.out.println(cross);
-        System.out.println(draws);
-    }
-
-    public static void main(String[] args) throws IOException {
-        TicTacToeProbabilityCalculator calculator = new TicTacToeProbabilityCalculator();
-        calculator.calculate();
+        return new Results(all, cross, circle, draws);
     }
 }

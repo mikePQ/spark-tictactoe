@@ -4,14 +4,14 @@ import org.apache.spark.api.java.JavaRDD
 import pl.edu.agh.eaiib.io.ztb.config.SparkConfig
 import java.io.Serializable
 
-class Tree(boardSize: Int, sparkConfig: SparkConfig) : Serializable {
+class Tree(boardState: BoardState, sparkConfig: SparkConfig) : Serializable {
 
     @Transient
-    private val sparkContext = sparkConfig.createSparkContext()
-    private val roots: JavaRDD<Node> = buildRoots(boardSize)
+    private val sparkContext = sparkConfig.sparkContext
+    private val roots: JavaRDD<Node> = buildRoots(boardState)
 
-    private fun buildRoots(boardSize: Int): JavaRDD<Node> {
-        val roots = mutableListOf(Node(emptyBoard(boardSize)))
+    private fun buildRoots(boardState: BoardState): JavaRDD<Node> {
+        val roots = mutableListOf(Node(boardState))
         return sparkContext.parallelize(roots)
     }
 

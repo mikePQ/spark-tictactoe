@@ -1,11 +1,14 @@
 package pl.edu.agh.eaiib.io.ztb.ui
 
+import javafx.concurrent.Task
+import javafx.event.EventHandler
 import javafx.scene.control.Label
 import javafx.scene.control.ToggleGroup
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.Pane
 import javafx.scene.text.Font
 import javafx.scene.text.FontWeight
+import pl.edu.agh.eaiib.io.ztb.Results
 import tornadofx.*
 
 class TicTacToeView : View("Kółko i krzyżyk - kalkulator prawdopodobieństwa") {
@@ -60,7 +63,15 @@ class TicTacToeView : View("Kółko i krzyżyk - kalkulator prawdopodobieństwa"
             layoutX = 665.0
             layoutY = 515.0
 
-            //TODO handle click
+            action {
+                val task: Task<Results> = runAsyncWithProgress {
+                    controller.calculateResults()
+                }
+
+                task.onSucceeded = EventHandler {
+                    information("Wyniki obliczeń", task.get().prettyPrint())
+                }
+            }
         }
 
         label("Następny gracz:") {
