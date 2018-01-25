@@ -28,7 +28,7 @@ public class Results {
     }
 
     public String prettyPrint() {
-        return MessageFormat.format("Wygrana gracza 1 (krzyżyk) : {0}\nWygrana gracza 2 (kółko) : {1}\nRemis : {2}", getCrossProbability(), getCircleProbability(), getDrawProbability());
+        return MessageFormat.format("Wygrana gracza 1 (krzyżyk) : {0}%\nWygrana gracza 2 (kółko) : {1}%\nRemis : {2}%", getCrossProbability(), getCircleProbability(), getDrawProbability());
     }
 
 }

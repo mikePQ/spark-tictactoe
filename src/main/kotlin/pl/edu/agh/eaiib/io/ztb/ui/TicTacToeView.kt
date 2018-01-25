@@ -69,7 +69,7 @@ class TicTacToeView : View("Kółko i krzyżyk - kalkulator prawdopodobieństwa"
                 }
 
                 task.onSucceeded = EventHandler {
-                    information("Wyniki obliczeń", task.get().prettyPrint())
+                    information("Wyniki obliczeń", task.get().prettyPrint(), title="Wyniki obliczeń")
                 }
             }
         }
