@@ -144,28 +144,28 @@ internal class BoardStateTest {
 
     @Test
     fun generateChildrenBoardStates() {
-        val row1 : Array<State> = arrayOf(State.Circle, State.Untouched, State.Circle);
-        val row2 : Array<State> = arrayOf(State.Circle, State.Circle, State.Circle);
-        val row3 : Array<State> = arrayOf(State.Untouched, State.Circle, State.Circle);
-        val input : Array<Array<State>> = arrayOf(row1, row2, row3);
-        val boardState : BoardState = BoardState(input, State.Cross);
-        val output : Array<BoardState> = boardState.generateChildrenBoardStates();
+        val row1 : Array<State> = arrayOf(State.Circle, State.Untouched, State.Circle)
+        val row2 : Array<State> = arrayOf(State.Circle, State.Circle, State.Circle)
+        val row3 : Array<State> = arrayOf(State.Untouched, State.Circle, State.Circle)
+        val input : Array<Array<State>> = arrayOf(row1, row2, row3)
+        val boardState = BoardState(input, State.Cross)
+        val output : Array<BoardState> = boardState.generateChildrenBoardStates()
         assertEquals(2, output.size)
 
-        val expectedOutput1_row1 : Array<State> = arrayOf(State.Circle, State.Cross, State.Circle);
-        val expectedOutput1_row2 : Array<State> = arrayOf(State.Circle, State.Circle, State.Circle);
-        val expectedOutput1_row3 : Array<State> = arrayOf(State.Untouched, State.Circle, State.Circle);
-        val expectedOutput1_input : Array<Array<State>> = arrayOf(expectedOutput1_row1, expectedOutput1_row2, expectedOutput1_row3);
-        val expectedBoardState1 : BoardState = BoardState(expectedOutput1_input, State.Circle);
-        assertArrayEquals(expectedBoardState1.getBoardStateMatrix(), output.get(0).getBoardStateMatrix())
-        assertEquals(State.Circle, output.get(0).nextTurn)
+        val expectedOutput1_row1 : Array<State> = arrayOf(State.Circle, State.Cross, State.Circle)
+        val expectedOutput1_row2 : Array<State> = arrayOf(State.Circle, State.Circle, State.Circle)
+        val expectedOutput1_row3 : Array<State> = arrayOf(State.Untouched, State.Circle, State.Circle)
+        val expectedOutput1_input : Array<Array<State>> = arrayOf(expectedOutput1_row1, expectedOutput1_row2, expectedOutput1_row3)
+        val expectedBoardState1 = BoardState(expectedOutput1_input, State.Circle)
+        assertArrayEquals(expectedBoardState1.getBoardStateMatrix(), output[0].getBoardStateMatrix())
+        assertEquals(State.Circle, output[0].nextTurn)
 
-        val expectedOutput2_row1 : Array<State> = arrayOf(State.Circle, State.Untouched, State.Circle);
-        val expectedOutput2_row2 : Array<State> = arrayOf(State.Circle, State.Circle, State.Circle);
-        val expectedOutput2_row3 : Array<State> = arrayOf(State.Cross, State.Circle, State.Circle);
-        val expectedOutput2_input : Array<Array<State>> = arrayOf(expectedOutput2_row1, expectedOutput2_row2, expectedOutput2_row3);
-        val expectedBoardState2 : BoardState = BoardState(expectedOutput2_input, State.Circle);
-        assertArrayEquals(expectedBoardState2.getBoardStateMatrix(), output.get(1).getBoardStateMatrix())
-        assertEquals(State.Circle, output.get(1).nextTurn)
+        val expectedOutput2_row1 : Array<State> = arrayOf(State.Circle, State.Untouched, State.Circle)
+        val expectedOutput2_row2 : Array<State> = arrayOf(State.Circle, State.Circle, State.Circle)
+        val expectedOutput2_row3 : Array<State> = arrayOf(State.Cross, State.Circle, State.Circle)
+        val expectedOutput2_input : Array<Array<State>> = arrayOf(expectedOutput2_row1, expectedOutput2_row2, expectedOutput2_row3)
+        val expectedBoardState2 = BoardState(expectedOutput2_input, State.Circle)
+        assertArrayEquals(expectedBoardState2.getBoardStateMatrix(), output[1].getBoardStateMatrix())
+        assertEquals(State.Circle, output[1].nextTurn)
     }
 }
