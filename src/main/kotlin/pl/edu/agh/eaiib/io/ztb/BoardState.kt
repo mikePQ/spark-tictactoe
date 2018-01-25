@@ -1,9 +1,15 @@
 package pl.edu.agh.eaiib.io.ztb
 
+import java.io.Serializable
 import java.util.ArrayList
 
-class BoardState(private val boardState: Array<Array<State>>, val nextTurn: State) {
+class BoardState(private val boardState: Array<Array<State>>, val nextTurn: State) : Serializable {
+
     fun hasGameEnded(): Boolean {
+        if (isBoardClear()) {
+            return false
+        }
+
         val statesPerColumn: MutableMap<Int, MutableSet<State>> = HashMap()
         val statesPerFirstDiagonal: MutableSet<State> = HashSet()
         val statesPerSecondDiagonal: MutableSet<State> = HashSet()
@@ -48,6 +54,18 @@ class BoardState(private val boardState: Array<Array<State>>, val nextTurn: Stat
         }
 
         return false
+    }
+
+    private fun isBoardClear(): Boolean {
+        for (i in 0 until boardState.size) {
+            for (j in 0 until boardState.size) {
+                if (boardState[i][j] != State.Untouched) {
+                    return false
+                }
+            }
+        }
+
+        return true
     }
 
     fun generateChildrenBoardStates(): Array<BoardState> {

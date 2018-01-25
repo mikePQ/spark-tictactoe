@@ -4,8 +4,9 @@ import org.apache.spark.api.java.JavaRDD
 import pl.edu.agh.eaiib.io.ztb.config.SparkConfig
 import java.io.Serializable
 
-class Tree(boardSize: Int, sparkConfig: SparkConfig) {
+class Tree(boardSize: Int, sparkConfig: SparkConfig) : Serializable {
 
+    @Transient
     private val sparkContext = sparkConfig.createSparkContext()
     private val roots: JavaRDD<Node> = buildRoots(boardSize)
 
@@ -13,17 +14,20 @@ class Tree(boardSize: Int, sparkConfig: SparkConfig) {
         val maxIndex = boardSize - 1
         val roots = ArrayList<Node>()
         for (i in 0..maxIndex) {
-            (0..maxIndex).mapTo(roots) { Node(State.Untouched, i, it) }
+            (0..maxIndex).mapTo(roots) { Node(emptyBoard(boardSize)) }
         }
 
         return sparkContext.parallelize(roots)
     }
 
     private fun buildChildren(node: Node): Iterator<Node> {
-        return ArrayList<Node>().iterator()
+        return node.boardState.generateChildrenBoardStates()
+                .asSequence()
+                .map { boardState -> Node(boardState, node) }
+                .iterator()
     }
 
-    private fun collectAllNodes() {
+    fun collectAllNodes(): JavaRDD<Node> {
         var elements = roots
         var prevCount = elements.count()
 
@@ -34,7 +38,7 @@ class Tree(boardSize: Int, sparkConfig: SparkConfig) {
 
             val count = elements.count()
             if (count == prevCount) {
-                break
+                return elements
             }
             prevCount = count
         }
@@ -43,32 +47,29 @@ class Tree(boardSize: Int, sparkConfig: SparkConfig) {
     private fun <T> T.iterator(): Iterator<T> {
         return listOf(this).iterator()
     }
+
+    private fun emptyBoard(boardSize: Int): BoardState {
+        val array = array2d(boardSize, boardSize, { State.Untouched })
+        return BoardState(array, State.Cross)
+    }
 }
 
-data class Node(val state: State,
-                private val row: Int,
-                private val column: Int) : Serializable {
+data class Node(val boardState: BoardState) : Serializable {
 
     var parent: Node? = null
-    private val children = mutableListOf<Node>()
+    private val leaf: Boolean by lazy {
+        boardState.hasGameEnded()
+    }
 
-    constructor(state: State, row: Int, column: Int, parent: Node) : this(state, row, column) {
+    constructor(state: BoardState, parent: Node) : this(state) {
         this.parent = parent
     }
 
-    fun addChildren(children: List<Node>) {
-        this.children.addAll(children)
-    }
-
     fun isLeaf(): Boolean {
-        return false
+        return leaf
     }
 }
 
 enum class State {
     Untouched, Cross, Circle
-}
-
-fun main(args: Array<String>) {
-    return;
 }
