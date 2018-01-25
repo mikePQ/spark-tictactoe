@@ -11,17 +11,14 @@ class Tree(boardSize: Int, sparkConfig: SparkConfig) : Serializable {
     private val roots: JavaRDD<Node> = buildRoots(boardSize)
 
     private fun buildRoots(boardSize: Int): JavaRDD<Node> {
-        val maxIndex = boardSize - 1
-        val roots = ArrayList<Node>()
-        for (i in 0..maxIndex) {
-            (0..maxIndex).mapTo(roots) { Node(emptyBoard(boardSize)) }
-        }
-
+        val roots = mutableListOf(Node(emptyBoard(boardSize)))
         return sparkContext.parallelize(roots)
     }
 
     private fun buildChildren(node: Node): Iterator<Node> {
-        return node.boardState.generateChildrenBoardStates()
+        val states = node.boardState.generateChildrenBoardStates()
+
+        return states
                 .asSequence()
                 .map { boardState -> Node(boardState, node) }
                 .iterator()
@@ -57,8 +54,8 @@ class Tree(boardSize: Int, sparkConfig: SparkConfig) : Serializable {
 data class Node(val boardState: BoardState) : Serializable {
 
     var parent: Node? = null
-    private val leaf: Boolean by lazy {
-        boardState.hasGameEnded()
+    val result: Result by lazy {
+        boardState.getResult()
     }
 
     constructor(state: BoardState, parent: Node) : this(state) {
@@ -66,10 +63,14 @@ data class Node(val boardState: BoardState) : Serializable {
     }
 
     fun isLeaf(): Boolean {
-        return leaf
+        return result != Result.NotFinished
     }
 }
 
 enum class State {
     Untouched, Cross, Circle
+}
+
+enum class Result {
+    NotFinished, CircleWon, CrossWon, Draw
 }

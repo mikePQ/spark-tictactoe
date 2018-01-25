@@ -15,7 +15,14 @@ public class TicTacToeProbabilityCalculator {
                 .filter(Node::isLeaf);
 
         long all = leafs.count();
+        long circle = leafs.filter(node -> node.getResult() == Result.CircleWon).count();
+        long cross = leafs.filter(node -> node.getResult() == Result.CrossWon).count();
+        long draws = leafs.count() - cross - circle;
+
         System.out.println(all);
+        System.out.println(circle);
+        System.out.println(cross);
+        System.out.println(draws);
     }
 
     public static void main(String[] args) throws IOException {

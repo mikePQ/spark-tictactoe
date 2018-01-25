@@ -12,7 +12,7 @@ internal class BoardStateTest {
         val row3: Array<State> = arrayOf(State.Untouched, State.Untouched, State.Circle)
         val input: Array<Array<State>> = arrayOf(row1, row2, row3)
         val boardState = BoardState(input, State.Cross)
-        assertTrue(boardState.hasGameEnded(), "Diagonal detected")
+        assertEquals(Result.CircleWon, boardState.getResult())
     }
 
     @Test
@@ -22,7 +22,7 @@ internal class BoardStateTest {
         val row3: Array<State> = arrayOf(State.Cross, State.Untouched, State.Circle)
         val input: Array<Array<State>> = arrayOf(row1, row2, row3)
         val boardState = BoardState(input, State.Cross)
-        assertTrue(boardState.hasGameEnded(), "Diagonal detected")
+        assertEquals(Result.CrossWon, boardState.getResult())
     }
 
     @Test
@@ -32,7 +32,7 @@ internal class BoardStateTest {
         val row3: Array<State> = arrayOf(State.Untouched, State.Untouched, State.Circle)
         val input: Array<Array<State>> = arrayOf(row1, row2, row3)
         val boardState = BoardState(input, State.Cross)
-        assertTrue(!boardState.hasGameEnded(), "Diagonal detected")
+        assertEquals(Result.NotFinished, boardState.getResult())
     }
 
     @Test
@@ -42,7 +42,7 @@ internal class BoardStateTest {
         val row3: Array<State> = arrayOf(State.Untouched, State.Untouched, State.Untouched)
         val input: Array<Array<State>> = arrayOf(row1, row2, row3)
         val boardState = BoardState(input, State.Cross)
-        assertFalse(boardState.hasGameEnded())
+        assertEquals(Result.NotFinished, boardState.getResult())
     }
 
     @Test
@@ -52,7 +52,7 @@ internal class BoardStateTest {
         val row3: Array<State> = arrayOf(State.Circle, State.Untouched, State.Circle)
         val input: Array<Array<State>> = arrayOf(row1, row2, row3)
         val boardState = BoardState(input, State.Cross)
-        assertTrue(boardState.hasGameEnded(), "Diagonal detected")
+        assertEquals(Result.CircleWon, boardState.getResult())
     }
 
     @Test
@@ -62,7 +62,7 @@ internal class BoardStateTest {
         val row3: Array<State> = arrayOf(State.Cross, State.Untouched, State.Circle)
         val input: Array<Array<State>> = arrayOf(row1, row2, row3)
         val boardState = BoardState(input, State.Cross)
-        assertTrue(!boardState.hasGameEnded(), "Diagonal detected")
+        assertEquals(Result.NotFinished, boardState.getResult())
     }
 
     @Test
@@ -72,7 +72,7 @@ internal class BoardStateTest {
         val row3: Array<State> = arrayOf(State.Untouched, State.Untouched, State.Circle)
         val input: Array<Array<State>> = arrayOf(row1, row2, row3)
         val boardState = BoardState(input, State.Cross)
-        assertTrue(boardState.hasGameEnded(), "Diagonal detected")
+        assertEquals(Result.CrossWon, boardState.getResult())
     }
 
     @Test
@@ -83,7 +83,7 @@ internal class BoardStateTest {
         val row4: Array<State> = arrayOf(State.Untouched, State.Untouched, State.Circle, State.Circle)
         val input: Array<Array<State>> = arrayOf(row1, row2, row3, row4)
         val boardState = BoardState(input, State.Cross)
-        assertTrue(boardState.hasGameEnded(), "Diagonal detected")
+        assertEquals(Result.CircleWon, boardState.getResult())
     }
 
     @Test
@@ -94,7 +94,7 @@ internal class BoardStateTest {
         val row4: Array<State> = arrayOf(State.Cross, State.Untouched, State.Circle, State.Circle)
         val input: Array<Array<State>> = arrayOf(row1, row2, row3, row4)
         val boardState = BoardState(input, State.Cross)
-        assertTrue(boardState.hasGameEnded(), "Diagonal detected")
+        assertEquals(Result.CrossWon, boardState.getResult())
     }
 
     @Test
@@ -105,7 +105,7 @@ internal class BoardStateTest {
         val row4: Array<State> = arrayOf(State.Cross, State.Untouched, State.Circle, State.Circle)
         val input: Array<Array<State>> = arrayOf(row1, row2, row3, row4)
         val boardState = BoardState(input, State.Cross)
-        assertTrue(!boardState.hasGameEnded(), "Diagonal detected")
+        assertEquals(Result.NotFinished, boardState.getResult())
     }
 
     @Test
@@ -116,7 +116,7 @@ internal class BoardStateTest {
         val row4: Array<State> = arrayOf(State.Cross, State.Untouched, State.Circle, State.Circle)
         val input: Array<Array<State>> = arrayOf(row1, row2, row3, row4)
         val boardState = BoardState(input, State.Cross)
-        assertTrue(boardState.hasGameEnded(), "Diagonal detected")
+        assertEquals(Result.CrossWon, boardState.getResult())
     }
 
     @Test
@@ -127,7 +127,7 @@ internal class BoardStateTest {
         val row4: Array<State> = arrayOf(State.Cross, State.Untouched, State.Circle, State.Circle)
         val input: Array<Array<State>> = arrayOf(row1, row2, row3, row4)
         val boardState = BoardState(input, State.Cross)
-        assertTrue(!boardState.hasGameEnded(), "Diagonal not detected")
+        assertEquals(Result.NotFinished, boardState.getResult())
     }
 
     @Test
@@ -138,7 +138,7 @@ internal class BoardStateTest {
         val row4: Array<State> = arrayOf(State.Cross, State.Untouched, State.Circle, State.Circle)
         val input: Array<Array<State>> = arrayOf(row1, row2, row3, row4)
         val boardState = BoardState(input, State.Cross)
-        assertTrue(boardState.hasGameEnded(), "Diagonal detected")
+        assertEquals(Result.CircleWon, boardState.getResult())
     }
 
     @Test
@@ -149,7 +149,7 @@ internal class BoardStateTest {
         val row4: Array<State> = arrayOf(State.Cross, State.Untouched, State.Circle, State.Circle)
         val input: Array<Array<State>> = arrayOf(row1, row2, row3, row4)
         val boardState = BoardState(input, State.Cross)
-        assertTrue(!boardState.hasGameEnded(), "Diagonal not detected")
+        assertEquals(Result.NotFinished, boardState.getResult())
     }
 
     @Test
